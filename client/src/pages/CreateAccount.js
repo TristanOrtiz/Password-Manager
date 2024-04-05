@@ -31,6 +31,9 @@ export default function CreateAccount() {
 
                             <Link class="button"> Register </Link>
                         </form>
+
+                        <h3 class="h3-login"> Already have an account? </h3>
+                        <Link class="not-reg" to="/home"> Login here </Link>
                     </div>
                 </div>
             </div>
