@@ -12,11 +12,43 @@ app.use(express.json()); //req.body
 // Sign Up
 app.post("/register", async(req, res) => {
     try {
-        console.log(req.body);
+        const { name, email, password } = req.body;
+
+        const existingUser = await pool.query("SELECT * FROM reguser WHERE email = $1", [email]);
+        if (existingUser.rows.length > 0) {
+            return res.status(400).json({ error: "User with this email already exists." });
+        }
+
+        const newUser = await pool.query("INSERT INTO reguser (name, email, password) VALUES ($1, $2, $3) RETURNING *", [name, email, password]);
+        res.json(newUser.rows[0]);
+
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ error: "Internal server error" });
     }
 })
+
+// Login
+app.get("/login", async(req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+// Get All User Passwords
+
+// Add Password
+
+// Update Password
+
+// Delete Password
+
+
 
 app.listen(5000, () => {
     console.log("server has started on port 5000");
