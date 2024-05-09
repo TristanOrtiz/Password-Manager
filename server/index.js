@@ -33,6 +33,17 @@ app.get("/login", async(req, res) => {
     try {
         const { email, password } = req.body;
 
+        const user = await pool.query("SELECT * FROM reguser WHERE email = $1", [email]);
+        if (user.rows.length === 0) {
+            return res.status(400).json({ error: "No account found with this email." });
+        }
+
+        const validPass = user.rows[0].password === password;
+        if (!validPass) {
+            return res.status(400).json({ error: "Invalid password." });
+        } 
+
+        res.json({ message: "Login successful." });
         
     } catch (err) {
         console.error(err.message);
@@ -41,6 +52,9 @@ app.get("/login", async(req, res) => {
 })
 
 // Get All User Passwords
+app.get("/")
+
+
 
 // Add Password
 
